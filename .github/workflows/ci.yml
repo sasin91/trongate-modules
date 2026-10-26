@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Syntax
+        run: find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l
+
+      - name: log
+        run: php log/tests/Log_test.php
+
+      - name: cli
+        run: php cli/tests/Cli_test.php
+
+      # error_pages extends Trongate's base class, so it runs inside a fresh app.
+      - name: error_pages
+        run: |
+          git clone --depth 1 https://github.com/trongate/trongate-framework.git "$RUNNER_TEMP/app"
+          cp -r error_pages "$RUNNER_TEMP/app/modules/"
+          php bin/run-tests.php -q --show-diff "$RUNNER_TEMP/app/modules/error_pages"
+
+  split:
+    name: Split modules onto their branches
+    needs: test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push each module to its branch
+        run: |
+          for module in log cli error_pages; do
+            git subtree split --prefix="$module" -b "split/$module"
+            git push origin "split/$module:refs/heads/$module"
+          done
