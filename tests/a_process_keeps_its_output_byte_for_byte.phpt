@@ -1,7 +1,7 @@
 --TEST--
 a process keeps its output byte for byte when there is no callback
 --SKIPIF--
-<?php if (PHP_OS_FAMILY === 'Windows') die('skip needs sh'); ?>
+<?php (PHP_OS_FAMILY === 'Windows') && die('skip needs sh'); ?>
 --FILE--
 <?php
 require __DIR__ . '/setup.inc';

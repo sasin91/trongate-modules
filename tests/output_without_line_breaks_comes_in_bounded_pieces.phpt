@@ -1,7 +1,7 @@
 --TEST--
 output without line breaks reaches the callback in bounded pieces
 --SKIPIF--
-<?php if (PHP_OS_FAMILY === 'Windows') die('skip needs sh'); ?>
+<?php (PHP_OS_FAMILY === 'Windows') && die('skip needs sh'); ?>
 --FILE--
 <?php
 require __DIR__ . '/setup.inc';

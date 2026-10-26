@@ -1,7 +1,7 @@
 --TEST--
 a process runs in its folder with its environment
 --SKIPIF--
-<?php if (PHP_OS_FAMILY === 'Windows') die('skip needs sh'); ?>
+<?php (PHP_OS_FAMILY === 'Windows') && die('skip needs sh'); ?>
 --FILE--
 <?php
 require __DIR__ . '/setup.inc';
