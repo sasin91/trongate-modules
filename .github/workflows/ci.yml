@@ -23,11 +23,8 @@ jobs:
       - name: Syntax
         run: find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l
 
-      - name: log
-        run: php log/tests/Log_test.php
-
-      - name: cli
-        run: php cli/tests/Cli_test.php
+      - name: log and cli
+        run: php bin/run-tests.php -q --show-diff log cli
 
       # error_pages extends Trongate's base class, so it runs inside a fresh app.
       - name: error_pages
