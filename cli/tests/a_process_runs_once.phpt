@@ -1,7 +1,7 @@
 --TEST--
 a process runs once; running it again is refused
 --SKIPIF--
-<?php if (PHP_OS_FAMILY === 'Windows') die('skip needs sh'); ?>
+<?php (PHP_OS_FAMILY === 'Windows') && die('skip needs sh'); ?>
 --FILE--
 <?php
 require __DIR__ . '/setup.inc';
