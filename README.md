@@ -39,12 +39,14 @@ README, and merge to `main`. Then `git subtree pull` it into each app.
 
 ## Tests
 
+Each module's tests are `.phpt` files in its `tests/` folder, run with
+php-src's `run-tests.php`:
+
 ```sh
-php log/tests/Log_test.php
-php cli/tests/Cli_test.php
+php bin/run-tests.php -q log cli
 ```
 
-The `cli` tests run `sh`, so they need Linux or macOS. `error_pages` extends
+The `cli` tests that run `sh` skip on Windows. `error_pages` extends
 Trongate's base class, so its tests run from inside an app:
 `php bin/run-tests.php -q modules/error_pages`. CI copies it into a fresh
 trongate-framework checkout and runs them there.
